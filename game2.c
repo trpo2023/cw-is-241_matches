@@ -57,5 +57,5 @@ int main()
 
     printf("\nИгрок %d победил! Он взял последнюю спичку.\n", currentPlayer);
 
-    return 0;
+    return 1;
 }
