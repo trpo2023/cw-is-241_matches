@@ -2,21 +2,52 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <string.h>
 
 const int MAX_MATCHES = 100;
 const int MIN_MATCHES = 1;
 const int MAX_TAKE = 10;
 
+void playerTurn(int *matches);
+void computerTurn(int *matches);
+
 int main()
 {
     int matches = MAX_MATCHES;
 
-    printf("Добро пожаловать в игру 'Спички'!\n");
+    printf("Добро пожаловать в игру '100 спичек'!\n");
 
     while (matches > 0)
     {
         printf("\nНа столе осталось %d спичек.\n", matches);
+
+        // Ход игрока
+        playerTurn(&matches);
+
+        if (matches <= 0)
+        {
+            printf("\nПоздравляем! Вы победили, взяв последнюю спичку.\n");
+            break;
+        }
+
+        // Ход компьютера
+        computerTurn(&matches);
+
+        if (matches <= 0)
+        {
+            printf("\nК сожалению, вы проиграли. Компьютер взял последнюю спичку.\n");
+            break;
+        }
+    }
+
+    return 0;
+}
+
+void playerTurn(int *matches)
+{
+    int num;
+
+    while (true)
+    {
         printf("Сколько спичек вы хотите взять (от %d до %d)? ", MIN_MATCHES, MAX_TAKE);
 
         char input[10];
@@ -24,10 +55,9 @@ int main()
 
         // Проверяем, является ли введенное значение числом
         bool isNumber = true;
-        size_t inputLength = strlen(input);
-        for (size_t i = 0; i < inputLength; i++)
+        for (int i = 0; input[i] != '\n'; i++)
         {
-            if (!isdigit(input[i]) && input[i] != '\n')
+            if (!isdigit(input[i]))
             {
                 isNumber = false;
                 break;
@@ -40,26 +70,30 @@ int main()
             continue;
         }
 
-        int num = atoi(input);
+        num = atoi(input);
 
-        if (num < MIN_MATCHES || num > MAX_TAKE || num > matches)
+        if (num < MIN_MATCHES || num > MAX_TAKE || num > *matches)
         {
             printf("Ошибка: введите число от %d до %d и не больше, чем осталось спичек.\n", MIN_MATCHES, MAX_TAKE);
             continue;
         }
 
-        matches -= num;
-
-        // Ход компьютера
-        int computerTake = (matches - 1) % (MAX_TAKE + 1);
-        if (computerTake < MIN_MATCHES)
-            computerTake = MIN_MATCHES;
-
-        printf("Компьютер взял %d спичек.\n", computerTake);
-        matches -= computerTake;
+        *matches -= num;
+        break;
     }
+}
 
-    printf("\nВы проиграли! На столе не осталось спичек.\n");
+void computerTurn(int *matches)
+{
+    int num;
 
-    return 0;
+    // Генерируем случайное количество спичек для хода компьютера
+    num = (rand() % MAX_TAKE) + MIN_MATCHES;
+
+    if (num > *matches)
+        num = *matches;
+
+    *matches -= num;
+
+    printf("Ход компьютера: Компьютер взял %d спичек.\n", num);
 }
