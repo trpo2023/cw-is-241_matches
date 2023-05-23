@@ -13,7 +13,7 @@ int main() {
   int currentPlayer = 1;
   int num;
 
-  printf("Добро пожаловать в игру 'Спички'!\n");
+  printf("Добро пожаловать в игру '100 Спичек'!\n");
 
   while (matches > 0) {
     printf("\nНа столе осталось %d спичек.\n", matches);
