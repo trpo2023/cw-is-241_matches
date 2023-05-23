@@ -87,5 +87,5 @@ void computerTurn(int *matches) {
 
   *matches -= num;
 
-  printf("Ход компьютера: Компьютер взял %d спичек.\n", num);
+  printf("\nХод компьютера: Компьютер взял %d спичек.\n", num);
 }
