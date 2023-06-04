@@ -1,0 +1,13 @@
+dist: xenial
+language: c
+compiler: gcc
+install:
+  - git clone --recursive https://github.com/throwtheswitch/cmock.git
+  - cd cmock
+  - bundle install
+  - cd ..
+script:
+  - git ls-files src/ | xargs clang-format -i && git diff --exit-code
+  - git ls-files test/ | xargs clang-format -i && git diff --exit-code
+  - make
+  - make test
